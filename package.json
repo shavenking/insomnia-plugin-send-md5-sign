@@ -1,0 +1,13 @@
+{
+  "name": "insomnia-plugin-send-md5-sign",
+  "version": "1.0.0",
+  "main": "app.js",
+
+  "insomnia": {
+    "name": "Send MD5 Sign",
+    "displayName": "Send MD5 Sign",
+    "description": "Send MD5 Sign",
+
+    "unlisted": true
+  }
+}
