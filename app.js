@@ -17,6 +17,14 @@ module.exports.requestHooks = [
             parameters = JSON.parse(requestBody.text)
         }
 
+        if (context.request.getMethod().toUpperCase() === 'GET') {
+            parameters = context.request.getParameters().reduce((accumulator, parameter) => {
+                accumulator[parameter['name']] = parameter['value']
+
+                return accumulator
+            }, {})
+        }
+
         delete parameters['sign']
         delete parameters['lang']
 
@@ -40,9 +48,13 @@ module.exports.requestHooks = [
             'utf8'
         ).digest('hex')
 
-        context.request.setBody({
-            mimeType: 'application/json',
-            text: JSON.stringify(parameters),
-        })
+        if (context.request.getMethod().toUpperCase() === 'GET') {
+            context.request.addParameter('sign', parameters['sign'])
+        } else {
+            context.request.setBody({
+                mimeType: 'application/json',
+                text: JSON.stringify(parameters),
+            })
+        }
     }
 ]
