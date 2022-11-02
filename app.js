@@ -25,6 +25,8 @@ module.exports.requestHooks = [
             }, {})
         }
 
+        const lang = parameters['lang']
+
         delete parameters['sign']
         delete parameters['lang']
 
@@ -50,7 +52,13 @@ module.exports.requestHooks = [
 
         if (context.request.getMethod().toUpperCase() === 'GET') {
             context.request.addParameter('sign', parameters['sign'])
+            if (lang) {
+                context.request.addParameter('lang', lang)
+            }
         } else {
+            if (lang) {
+                parameters = {...parameters, 'lang': lang}
+            }
             context.request.setBody({
                 mimeType: 'application/json',
                 text: JSON.stringify(parameters),
